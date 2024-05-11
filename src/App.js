@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import Login from "./Login";
 import "./App.css";
 
 function App() {
+  const [show, setShow] = useState(false);
   const [showList, setShowList] = useState(false);
   const [data, setData] = useState([]);
   const [employeeId, setEmployeeId] = useState(null);
@@ -14,6 +16,10 @@ function App() {
   // useEffect(() => {
   //   fetchEmployeeData();
   // }, []);
+
+  const handleLogin = () => {
+    setShow(true);
+  };
   const handleShowList = () => {
     setShowList(true);
     fetchEmployeeData();
@@ -110,9 +116,8 @@ function App() {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            // Add any other headers if required
           },
-          body: JSON.stringify(newData), // Convert the data to JSON string
+          body: JSON.stringify(newData),
         }
       );
 
@@ -120,12 +125,9 @@ function App() {
         throw new Error("Failed to update data");
       }
       fetchEmployeeData();
-      // const updatedData = await response.json();
-      // return updatedData;
     } catch (error) {
       console.error("Error updating data:", error.message);
-      // You can handle the error here, e.g., show a message to the user
-      throw error; // Rethrow the error if needed
+      throw error;
     }
   };
 
@@ -165,102 +167,170 @@ function App() {
 
   return (
     <div className="App container mt-3">
-      {!showList && (
-        <div className="text-center p-2">
-          <h1 className="text-info">Sciflare</h1>
-          <button
-            type="button"
-            className="btn btn-info btn-lg mx-1"
-            onClick={handleShowList}
-          >
-            Show Employees List
-          </button>
-        </div>
-      )}
-      {showList && (
+      {!show && <Login handleLogin={handleLogin} />}
+      {show && (
         <>
-          <h1 className="text-center p-2 text-info">Sciflare Employees</h1>
-          <table className="table table-striped table-bordered table-hover table-sm text-center">
-            <thead>
-              <tr>
-                <th>Employee No</th>
-                <th>Employee Name</th>
-                <th>Experience</th>
-                <th>Email</th>
-                <th>Modify</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>Raj</td>
-                <td>3</td>
-                <td>raj@gmail.com</td>
-                <td>
-                  <button type="button" className="btn btn-secondary">
-                    Edit
-                  </button>
-                  <button type="button" className="btn btn-danger mx-1">
-                    Delete
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Preethi</td>
-                <td>2</td>
-                <td>preethi@gmail.com</td>
-                <td>
-                  <button type="button" className="btn btn-secondary">
-                    Edit
-                  </button>
-                  <button type="button" className="btn btn-danger mx-1">
-                    Delete
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Palani</td>
-                <td>6</td>
-                <td>palani@gmail.com</td>
-                <td>
-                  <button type="button" className="btn btn-secondary">
-                    Edit
-                  </button>
-                  <button type="button" className="btn btn-danger mx-1">
-                    Delete
-                  </button>
-                </td>
-              </tr>
-              {data.map((empData) => (
-                <tr key={empData._id}>
-                  {(edit == null || edit != empData._id) && (
-                    <>
-                      <td>{empData.empId}</td>
-                      <td>{empData.empName}</td>
-                      <td>{empData.experience}</td>
-                      <td>{empData.email}</td>
-                      <td>
-                        <button
-                          type="button"
-                          className="btn btn-secondary"
-                          onClick={() => handleEdit(empData._id)}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-danger mx-1"
-                          onClick={() => handleDelete(empData._id)}
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </>
-                  )}
-                  {edit == empData._id && (
-                    <>
+          {!showList && (
+            <div className="text-center p-2">
+              <h1 className="text-info">Sciflare</h1>
+              <button
+                type="button"
+                className="btn btn-secondary mx-1"
+                onClick={handleShowList}
+              >
+                Show Employees List
+              </button>
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={() => setShow(false)}
+              >
+                Logout
+              </button>
+            </div>
+          )}
+          {showList && (
+            <>
+              <h1 className="text-center p-2 text-info">Sciflare Employees</h1>
+              <button
+                type="button"
+                className="btn btn-danger float-end m-3"
+                onClick={() => setShowList(false)}
+              >
+                Close
+              </button>
+              <table className="table table-striped table-bordered table-hover table-sm text-center">
+                <thead>
+                  <tr>
+                    <th>Employee No</th>
+                    <th>Employee Name</th>
+                    <th>Experience</th>
+                    <th>Email</th>
+                    <th>Modify</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Raj</td>
+                    <td>3</td>
+                    <td>raj@gmail.com</td>
+                    <td>
+                      <button type="button" className="btn btn-secondary">
+                        Edit
+                      </button>
+                      <button type="button" className="btn btn-danger mx-1">
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>Preethi</td>
+                    <td>2</td>
+                    <td>preethi@gmail.com</td>
+                    <td>
+                      <button type="button" className="btn btn-secondary">
+                        Edit
+                      </button>
+                      <button type="button" className="btn btn-danger mx-1">
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>Palani</td>
+                    <td>6</td>
+                    <td>palani@gmail.com</td>
+                    <td>
+                      <button type="button" className="btn btn-secondary">
+                        Edit
+                      </button>
+                      <button type="button" className="btn btn-danger mx-1">
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                  {data.map((empData) => (
+                    <tr key={empData._id}>
+                      {(edit == null || edit != empData._id) && (
+                        <>
+                          <td>{empData.empId}</td>
+                          <td>{empData.empName}</td>
+                          <td>{empData.experience}</td>
+                          <td>{empData.email}</td>
+                          <td>
+                            <button
+                              type="button"
+                              className="btn btn-secondary"
+                              onClick={() => handleEdit(empData._id)}
+                            >
+                              Edit
+                            </button>
+                            <button
+                              type="button"
+                              className="btn btn-danger mx-1"
+                              onClick={() => handleDelete(empData._id)}
+                            >
+                              Delete
+                            </button>
+                          </td>
+                        </>
+                      )}
+                      {edit == empData._id && (
+                        <>
+                          <td>
+                            <input
+                              value={employeeId}
+                              type="number"
+                              placeholder="Enter employee Id/No."
+                              className="form-control"
+                              onChange={(e) => setEmployeeId(e.target.value)}
+                            />
+                          </td>
+                          <td>
+                            <input
+                              value={employeeName}
+                              onChange={(e) => setEmployeeName(e.target.value)}
+                              type="text"
+                              placeholder="Enter employee name"
+                              className="form-control"
+                            />
+                          </td>
+                          <td>
+                            <input
+                              value={empExperience}
+                              onChange={(e) => setEmpExperience(e.target.value)}
+                              type="number"
+                              placeholder="Enter experience"
+                              className="form-control"
+                            />
+                          </td>
+                          <td>
+                            <input
+                              value={empEmail}
+                              onChange={(e) => setEmpEmail(e.target.value)}
+                              type="email"
+                              placeholder="Enter email"
+                              className="form-control"
+                            />
+                          </td>
+                          <td>
+                            <button
+                              type="button"
+                              className="btn btn-primary"
+                              onClick={handleUpdateInput}
+                            >
+                              Save
+                            </button>
+                          </td>
+                        </>
+                      )}
+                    </tr>
+                  ))}
+                  {newRow && (
+                    <tr>
                       <td>
                         <input
                           value={employeeId}
@@ -301,79 +371,30 @@ function App() {
                         <button
                           type="button"
                           className="btn btn-primary"
-                          onClick={handleUpdateInput}
+                          onClick={handleSaveInput}
                         >
                           Save
                         </button>
                       </td>
-                    </>
+                    </tr>
                   )}
-                </tr>
-              ))}
-              {newRow && (
-                <tr>
-                  <td>
-                    <input
-                      value={employeeId}
-                      type="number"
-                      placeholder="Enter employee Id/No."
-                      className="form-control"
-                      onChange={(e) => setEmployeeId(e.target.value)}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      value={employeeName}
-                      onChange={(e) => setEmployeeName(e.target.value)}
-                      type="text"
-                      placeholder="Enter employee name"
-                      className="form-control"
-                    />
-                  </td>
-                  <td>
-                    <input
-                      value={empExperience}
-                      onChange={(e) => setEmpExperience(e.target.value)}
-                      type="number"
-                      placeholder="Enter experience"
-                      className="form-control"
-                    />
-                  </td>
-                  <td>
-                    <input
-                      value={empEmail}
-                      onChange={(e) => setEmpEmail(e.target.value)}
-                      type="email"
-                      placeholder="Enter email"
-                      className="form-control"
-                    />
-                  </td>
-                  <td>
-                    <button
-                      type="button"
-                      className="btn btn-primary"
-                      onClick={handleSaveInput}
-                    >
-                      Save
-                    </button>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-          <div className="button float-end p-3">
-            <button
-              type="button"
-              className="btn btn-success btn-lg"
-              onClick={(e) => setNewRow(true)}
-            >
-              Add
-            </button>
-          </div>
-          <div className="bg-warning row p-3 mt-5">
-            Note: First three data are default it can't be deletable after third
-            row only fetched from api
-          </div>
+                </tbody>
+              </table>
+              <div className="button float-end p-3">
+                <button
+                  type="button"
+                  className="btn btn-success btn-lg"
+                  onClick={(e) => setNewRow(true)}
+                >
+                  Add
+                </button>
+              </div>
+              <div className="bg-warning row p-3 mt-5">
+                Note: First three data are default it can't be deletable after
+                third row only fetched from api
+              </div>
+            </>
+          )}
         </>
       )}
     </div>
