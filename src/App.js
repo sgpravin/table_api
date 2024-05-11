@@ -13,18 +13,17 @@ function App() {
   const [newRow, setNewRow] = useState(false);
   const [edit, setEdit] = useState(null);
 
-  // useEffect(() => {
-  //   fetchEmployeeData();
-  // }, []);
-
+  // To handle the login page
   const handleLogin = () => {
     setShow(true);
   };
+  // It is to display list of items from the api
   const handleShowList = () => {
     setShowList(true);
     fetchEmployeeData();
   };
 
+  // Fetch api using GET method to get and store in array
   const fetchEmployeeData = async () => {
     try {
       const response = await fetch(
@@ -40,7 +39,8 @@ function App() {
     }
   };
 
-  async function postData() {
+  // To send new employee details to the api
+  const postData = async () => {
     const url =
       "https://crudcrud.com/api/2a6aadb744b5420599d1b4fa7b2c2c4d/sciflareemployees";
     const empData = {
@@ -69,8 +69,9 @@ function App() {
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
     }
-  }
+  };
 
+  // To handle the new user input
   const handleSaveInput = () => {
     if (
       empEmail != "" &&
@@ -89,6 +90,7 @@ function App() {
     }
   };
 
+  // To delete employee details from the list
   const handleDelete = async (id) => {
     try {
       const response = await fetch(
@@ -107,6 +109,7 @@ function App() {
     }
   };
 
+  // To make change in the employee details using PUT method to update api
   const updateData = async (id, newData) => {
     console.log(newData);
     try {
@@ -131,16 +134,17 @@ function App() {
     }
   };
 
+  // To handle the edit button functionality
   const handleEdit = (id) => {
     setEdit(id);
     const newData = data.filter((arr) => arr._id === id);
-    console.log(newData[0].empName);
     setEmpEmail(newData[0].email);
     setEmpExperience(newData[0].experience);
     setEmployeeId(newData[0].empId);
     setEmployeeName(newData[0].empName);
   };
 
+  // To handle the update button functionality
   const handleUpdateInput = () => {
     const empData = {
       empId: employeeId,
@@ -167,9 +171,11 @@ function App() {
 
   return (
     <div className="App container mt-3">
+      {/* Login Page */}
       {!show && <Login handleLogin={handleLogin} />}
       {show && (
         <>
+          {/* Home page */}
           {!showList && (
             <div className="text-center p-2">
               <h1 className="text-info">Sciflare</h1>
@@ -189,6 +195,7 @@ function App() {
               </button>
             </div>
           )}
+          {/* Employees list in table */}
           {showList && (
             <>
               <h1 className="text-center p-2 text-info">Sciflare Employees</h1>
@@ -329,6 +336,7 @@ function App() {
                       )}
                     </tr>
                   ))}
+                  {/* Add new employee details */}
                   {newRow && (
                     <tr>
                       <td>
