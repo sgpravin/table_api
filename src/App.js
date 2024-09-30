@@ -178,7 +178,7 @@ function App() {
           {/* Home page */}
           {!showList && (
             <div className="text-center p-2">
-              <h1 className="text-info">Sciflare</h1>
+              <h1 className="text-info">ABC Softwares</h1>
               <button
                 type="button"
                 className="btn btn-secondary mx-1"
